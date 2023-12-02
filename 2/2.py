@@ -1,13 +1,9 @@
 import re
 
-a = {
-  "red": 12,
-  "green": 13,
-  "blue": 14
-}
+# Alternatively, since it's basically just multiplying the top values, if you can regex out '[some spaces][integer][some spaces][each color];' you could just multiple the max for each without having to iterate through everything? 
 
 possible_minimums = {
-	"red": 0,
+  "red": 0,
   "green": 0,
   "blue": 0
 }
