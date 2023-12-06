@@ -3,7 +3,10 @@ import np
 
 input_file = "input"
 
-
+"""
+So I realized after doing this that you can do it real real easy. 
+floor(time-(2*(distance/time)))
+"""
 
 
 # Read file and return as unedited list
