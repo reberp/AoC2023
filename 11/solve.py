@@ -33,9 +33,9 @@ def parse_file():
 #then can count the symbols based on the factor to get a total
 def expand_row(contents,empty_rows):
 	addition=0
-	#print("Adding at row: "+str(empty_rows))
 	for empty_row in empty_rows:
-		contents.insert(empty_row+addition,contents[empty_row+addition])
+		#contents.insert(empty_row+addition,contents[empty_row+addition])
+		contents[empty_row]=list(["+" for _ in range(len(contents[empty_row]))])
 		addition+=1
 	#print(contents)
 	return(contents)
@@ -72,7 +72,7 @@ def find_galaxies(expanded_univ):
 	print(galaxy_set)
 	return galaxy_set
 			
-def count_distances(galaxy_set):
+def count_distances_1(contents,galaxy_set):
 	total=0
 	num_pair=0
 	for galaxy_number,from_galaxy in enumerate(galaxy_set):
@@ -87,10 +87,43 @@ def count_distances(galaxy_set):
 			num_pair+=1
 	print(total,num_pair)
 
+def count_distances(contents,galaxy_set):
+	total=0
+	num_pair=0
+	print("right: "+str(contents))
+	righted_pivot = [pair for pair in zip(*contents)]
+	pivoted_contents = ["".join(col) for col in righted_pivot]
+	print("pivot: "+str(pivoted_contents)	)
+	for galaxy_number,from_galaxy in enumerate(galaxy_set):
+		print("Distance from #{} at {}".format(galaxy_number,from_galaxy))		
+		galaxy_set = galaxy_set[1:]		
+		for to_galaxy in galaxy_set:
+			max_col=max(to_galaxy[1],from_galaxy[1])
+			min_col=min(to_galaxy[1],from_galaxy[1])
+			max_row=max(to_galaxy[0],from_galaxy[0])
+			min_row=min(to_galaxy[0],from_galaxy[0])
+			#check + in row vals
+			for char in contents[from_galaxy[0]][min_col:max_col]:
+				if char=="+":
+					total+=1000000
+				else:
+					total+=1
+			for char in pivoted_contents[from_galaxy[1]][min_row:max_row]:
+				if char=="+":
+					total+=1000000
+				else:
+					total+=1					
+
+			#print("  vertical path: "+str(pivoted_contents[from_galaxy[1]][min_row:max_row]))
+			#print("  horizont path: "+str(contents[from_galaxy[0]][min_col:max_col]))
+			num_pair+=1
+		
+	print(total,num_pair)	
+
 contents = parse_file()
 expanded_univ = expand_univ(contents)
 galaxy_set = find_galaxies(expanded_univ)
-distance = count_distances(galaxy_set)
+distance = count_distances(expanded_univ,galaxy_set)
 #organized = organize_contents(contents)
 
 
